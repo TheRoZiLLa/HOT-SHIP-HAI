@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3872652612106339762}
   - component: {fileID: 4495784779436895312}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: MicrophoneManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -63,7 +63,7 @@ GameObject:
   - component: {fileID: 3079045717756286386}
   - component: {fileID: 410163736694907382}
   - component: {fileID: 3173815954569009277}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -195,7 +195,7 @@ GameObject:
   - component: {fileID: 5536224138014575381}
   - component: {fileID: 6755741457846506819}
   - component: {fileID: 1556729081470544031}
-  m_Layer: 5
+  m_Layer: 3
   m_Name: Ingame_UI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -324,7 +324,7 @@ GameObject:
   - component: {fileID: 2666975432407521321}
   - component: {fileID: 7064411445197930384}
   - component: {fileID: 8000599527702069880}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: ThirdPersonCamera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
@@ -485,7 +485,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7028833741770483386}
-  m_Layer: 0
+  - component: {fileID: -1824369248892370767}
+  m_Layer: 3
   m_Name: Player Kuy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -512,6 +513,18 @@ Transform:
   - {fileID: 4779023417415028904}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &-1824369248892370767
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4866538379060731776}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 580f5eb58da74e84ebd300e797eeeefc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6683165706938917140
 GameObject:
   m_ObjectHideFlags: 0
@@ -523,7 +536,7 @@ GameObject:
   - component: {fileID: 8113119999056072634}
   - component: {fileID: 5565802882839318153}
   - component: {fileID: 7286013506305374888}
-  m_Layer: 5
+  m_Layer: 3
   m_Name: VolumeBarBackground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -599,7 +612,7 @@ GameObject:
   - component: {fileID: 4779023417415028904}
   - component: {fileID: 3241300299946152159}
   - component: {fileID: 5381610653149496589}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: EventSystem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -678,7 +691,7 @@ GameObject:
   - component: {fileID: 10134058643433609}
   - component: {fileID: 5153570968772833941}
   - component: {fileID: 7384408590386273115}
-  m_Layer: 5
+  m_Layer: 3
   m_Name: VolumeBarFill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
