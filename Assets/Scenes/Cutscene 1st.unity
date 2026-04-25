@@ -2609,7 +2609,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2020992140052417456, guid: c7f39adc5c1e646448ce0285f2eb7879, type: 3}
       propertyPath: m_LocalPosition.x
+<<<<<<< Updated upstream
       value: 0.807
+=======
+      value: -2.937
+>>>>>>> Stashed changes
       objectReference: {fileID: 0}
     - target: {fileID: 2020992140052417456, guid: c7f39adc5c1e646448ce0285f2eb7879, type: 3}
       propertyPath: m_LocalPosition.y
@@ -2985,12 +2989,16 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 270cf3db118d2694b8b51a46d379ca91, type: 3}
+<<<<<<< Updated upstream
 --- !u!4 &1945111533 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 191014609756626917, guid: 270cf3db118d2694b8b51a46d379ca91, type: 3}
   m_PrefabInstance: {fileID: 1945111532}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2135407519
+=======
+--- !u!1001 &2008343953
+>>>>>>> Stashed changes
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -2998,6 +3006,7 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+<<<<<<< Updated upstream
     - target: {fileID: 1371647732391088, guid: 07a82e97a5029824f80d55c3952e43e1, type: 3}
       propertyPath: m_Name
       value: Door_1_Coffe
@@ -3042,11 +3051,77 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+=======
+    - target: {fileID: 1949671195395142, guid: 35ca5007b9b280f4f93ae97058146c54, type: 3}
+      propertyPath: m_Name
+      value: Door_1_White
+      objectReference: {fileID: 0}
+    - target: {fileID: 4227889827151656, guid: 35ca5007b9b280f4f93ae97058146c54, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.34
+      objectReference: {fileID: 0}
+    - target: {fileID: 4227889827151656, guid: 35ca5007b9b280f4f93ae97058146c54, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.34
+      objectReference: {fileID: 0}
+    - target: {fileID: 4227889827151656, guid: 35ca5007b9b280f4f93ae97058146c54, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.34
+      objectReference: {fileID: 0}
+    - target: {fileID: 4227889827151656, guid: 35ca5007b9b280f4f93ae97058146c54, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -3.295
+      objectReference: {fileID: 0}
+    - target: {fileID: 4227889827151656, guid: 35ca5007b9b280f4f93ae97058146c54, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.07422805
+      objectReference: {fileID: 0}
+    - target: {fileID: 4227889827151656, guid: 35ca5007b9b280f4f93ae97058146c54, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 4.919
+      objectReference: {fileID: 0}
+    - target: {fileID: 4227889827151656, guid: 35ca5007b9b280f4f93ae97058146c54, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4227889827151656, guid: 35ca5007b9b280f4f93ae97058146c54, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4227889827151656, guid: 35ca5007b9b280f4f93ae97058146c54, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4227889827151656, guid: 35ca5007b9b280f4f93ae97058146c54, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4227889827151656, guid: 35ca5007b9b280f4f93ae97058146c54, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4227889827151656, guid: 35ca5007b9b280f4f93ae97058146c54, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4227889827151656, guid: 35ca5007b9b280f4f93ae97058146c54, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4227889827151656, guid: 35ca5007b9b280f4f93ae97058146c54, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
+>>>>>>> Stashed changes
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
+<<<<<<< Updated upstream
   m_SourcePrefab: {fileID: 100100000, guid: 07a82e97a5029824f80d55c3952e43e1, type: 3}
+=======
+  m_SourcePrefab: {fileID: 100100000, guid: 35ca5007b9b280f4f93ae97058146c54, type: 3}
+>>>>>>> Stashed changes
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -3059,5 +3134,13 @@ SceneRoots:
   - {fileID: 4476005}
   - {fileID: 1365668261}
   - {fileID: 1193812642}
+<<<<<<< Updated upstream
   - {fileID: 2135407519}
   - {fileID: 1855747480}
+=======
+  - {fileID: 302894740}
+  - {fileID: 815007164}
+  - {fileID: 604392399}
+  - {fileID: 1632011969}
+  - {fileID: 2008343953}
+>>>>>>> Stashed changes
