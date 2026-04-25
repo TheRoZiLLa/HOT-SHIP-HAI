@@ -44,7 +44,7 @@ public class PlayerHealth : MonoBehaviour
         }
     }
 
-    private void Die()
+    public void Die()
     {
         isDying = true;
         Debug.Log("Player has died from sunlight.");
