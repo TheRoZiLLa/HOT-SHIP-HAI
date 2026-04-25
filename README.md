@@ -1,7 +1,7 @@
-## Nuu Tid Fai Game!! (Hamster GameJamX Project)
+# Nuu Tid Fai Game!! (Hamster GameJamX Project)
 ![](https://github.com/TheRoZiLLa/HOT-SHIP-HAI/blob/main/Doc/NuuTidFai.png)
 
-# การโหลดเข้า UNITY ตัวเอง
+## การโหลดเข้า UNITY ตัวเอง
 1. โหลด github desktop [Download Github Desktop](https://desktop.github.com/download/)
 2. กดที่ code ในเว็ป github
 3. เลือกเปิดใน github desktop
