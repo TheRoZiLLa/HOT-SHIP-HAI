@@ -525,6 +525,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 580f5eb58da74e84ebd300e797eeeefc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  timeToDieInSun: 3
 --- !u!1 &6683165706938917140
 GameObject:
   m_ObjectHideFlags: 0
