@@ -3,7 +3,7 @@
 
 # การโหลดเข้า UNITY ตัวเอง
 1. โหลด github desktop [Download Github Desktop](https://desktop.github.com/download/)
-2. กดที่ code ในเว็ป github ![](https://github.com/TheRoZiLLa/HOT-SHIP-HAI/blob/main/Doc/tu1.png)
+2. กดที่ code ในเว็ป github
 3. เลือกเปิดใน github desktop
 4. เข้า unity hub
 5. เลือกหัวข้อที่ชื่อ add
