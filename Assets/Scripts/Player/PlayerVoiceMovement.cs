@@ -1,7 +1,7 @@
 // ============================================================================
 // PlayerVoiceMovement.cs
-// Forward-only movement driven by microphone loudness with mouse rotation.
-// Uses CharacterController for reliable ground movement without physics jitter.
+// Forward-only movement driven by voice pattern detection.
+// Uses IVoiceDetectionProvider for state-based movement (Idle/Walk/Run).
 // Compatible with Unity 6000.0.72f1
 // ============================================================================
 
@@ -12,8 +12,13 @@ using HotShipHai.Voice;
 namespace HotShipHai.Player
 {
     /// <summary>
-    /// Moves the player FORWARD based on microphone loudness.
-    /// Rotation is controlled by horizontal mouse movement.
+    /// Moves the player forward based on detected voice patterns:
+    /// <list type="bullet">
+    ///   <item><b>Idle</b> — no movement (silence / noise / invalid patterns)</item>
+    ///   <item><b>Walk</b> — sustained voice drives forward at walk speed</item>
+    ///   <item><b>Run</b> — rapid voice bursts drive forward at run speed</item>
+    /// </list>
+    /// Rotation is controlled by horizontal mouse input.
     /// No backward movement. No jumping.
     /// </summary>
     [RequireComponent(typeof(CharacterController))]
@@ -23,19 +28,25 @@ namespace HotShipHai.Player
         // Inspector Settings
         // ====================================================================
 
-        [Header("References")]
-        [Tooltip("The MicrophoneInput (or any IMicrophoneInputProvider) component. " +
-            "If left empty, will auto-find on the same GameObject.")]
-        [SerializeField] private MicrophoneInput microphoneInput;
+        [Header("Voice Detection Provider")]
+        [Tooltip("The LoudnessDetectionProvider (or any IVoiceDetectionProvider). " +
+            "Auto-found in scene if left empty.")]
+        [SerializeField] private LoudnessDetectionProvider defaultProvider;
 
-        [Header("Movement")]
-        [Tooltip("Minimum forward speed when voice is just above threshold.")]
-        [SerializeField] private float minMoveSpeed = 1f;
+        [Header("Movement Speeds")]
+        [Tooltip("Minimum walk speed at low voice volume.")]
+        [SerializeField] private float minWalkSpeed = 1.5f;
 
-        [Tooltip("Maximum forward speed at full loudness.")]
-        [SerializeField] private float maxMoveSpeed = 8f;
+        [Tooltip("Maximum walk speed at high voice volume.")]
+        [SerializeField] private float maxWalkSpeed = 4f;
 
-        [Tooltip("How quickly the character accelerates/decelerates. " +
+        [Tooltip("Minimum run speed at low voice volume.")]
+        [SerializeField] private float minRunSpeed = 5f;
+
+        [Tooltip("Maximum run speed at high voice volume.")]
+        [SerializeField] private float maxRunSpeed = 9f;
+
+        [Tooltip("How quickly the character accelerates / decelerates. " +
             "Higher = snappier response.")]
         [Range(1f, 20f)]
         [SerializeField] private float acceleration = 8f;
@@ -58,25 +69,31 @@ namespace HotShipHai.Player
         // ====================================================================
 
         private CharacterController _controller;
-        private IMicrophoneInputProvider _inputProvider;
+        private IVoiceDetectionProvider _provider;
 
         private float _currentSpeed;
         private float _targetYRotation;
         private float _verticalVelocity;
-        private Vector3 _lastMoveDirection;
 
         // ====================================================================
-        // Public Read-Only Properties (for UI)
+        // Public Read-Only Properties (for UI / Animation)
         // ====================================================================
 
         /// <summary>Current actual movement speed.</summary>
         public float CurrentSpeed => _currentSpeed;
 
-        /// <summary>Target speed based on mic loudness (before smoothing).</summary>
+        /// <summary>Target speed based on voice state (before smoothing).</summary>
         public float TargetSpeed { get; private set; }
 
         /// <summary>Whether the character is currently moving.</summary>
         public bool IsMoving => _currentSpeed > 0.01f;
+
+        /// <summary>Current movement state from the voice provider.</summary>
+        public VoiceMovementState MovementState =>
+            _provider != null ? _provider.CurrentState : VoiceMovementState.Idle;
+
+        /// <summary>The active voice detection provider (for debug UI).</summary>
+        public IVoiceDetectionProvider ActiveProvider => _provider;
 
         // ====================================================================
         // MonoBehaviour Lifecycle
@@ -101,8 +118,8 @@ namespace HotShipHai.Player
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
 
-            // Find the microphone input provider
-            ResolveInputProvider();
+            // Find the voice detection provider
+            ResolveProvider();
 
             // Initialize rotation to current facing
             _targetYRotation = transform.eulerAngles.y;
@@ -125,7 +142,6 @@ namespace HotShipHai.Player
         /// </summary>
         private void HandleMouseRotation()
         {
-            // Read mouse delta from New Input System
             if (Mouse.current == null) return;
 
             float mouseX = Mouse.current.delta.x.ReadValue() * mouseSensitivity * 0.1f;
@@ -149,27 +165,37 @@ namespace HotShipHai.Player
         // ====================================================================
 
         /// <summary>
-        /// Computes forward speed based on microphone loudness.
-        /// Only moves forward — never backward.
+        /// Sets forward speed based on voice state AND loudness.
+        /// Louder voice = faster movement within the Walk/Run speed range.
         /// </summary>
         private void HandleVoiceMovement()
         {
-            if (_inputProvider == null || !_inputProvider.IsDeviceReady)
+            if (_provider == null || !_provider.IsDeviceReady)
             {
                 TargetSpeed = 0f;
                 _currentSpeed = Mathf.Lerp(_currentSpeed, 0f, Time.deltaTime * acceleration);
                 return;
             }
 
-            if (_inputProvider.IsVoiceActive)
+            // Use loudness to scale speed within each state's range
+            float loudness = Mathf.Clamp01(_provider.Loudness);
+
+            switch (_provider.CurrentState)
             {
-                // Map loudness [0, 1] → speed [minMoveSpeed, maxMoveSpeed]
-                float loudness = _inputProvider.Loudness;
-                TargetSpeed = Mathf.Lerp(minMoveSpeed, maxMoveSpeed, loudness);
-            }
-            else
-            {
-                TargetSpeed = 0f;
+                case VoiceMovementState.Walk:
+                    // Quiet voice = minWalkSpeed, loud voice = maxWalkSpeed
+                    TargetSpeed = Mathf.Lerp(minWalkSpeed, maxWalkSpeed, loudness);
+                    break;
+
+                case VoiceMovementState.Run:
+                    // Quiet bursts = minRunSpeed, loud bursts = maxRunSpeed
+                    TargetSpeed = Mathf.Lerp(minRunSpeed, maxRunSpeed, loudness);
+                    break;
+
+                case VoiceMovementState.Idle:
+                default:
+                    TargetSpeed = 0f;
+                    break;
             }
 
             // Smoothly accelerate / decelerate
@@ -198,7 +224,6 @@ namespace HotShipHai.Player
         {
             if (_controller.isGrounded)
             {
-                // Small downward force to keep grounded (prevents floating)
                 _verticalVelocity = -2f;
             }
             else
@@ -216,56 +241,48 @@ namespace HotShipHai.Player
         /// </summary>
         private void ApplyMovement()
         {
-            // Forward is always the player's local forward direction
             Vector3 moveDir = transform.forward * _currentSpeed;
-
-            // Add gravity
             moveDir.y = _verticalVelocity;
-
-            // Move via CharacterController
             _controller.Move(moveDir * Time.deltaTime);
-
-            _lastMoveDirection = moveDir;
         }
 
         // ====================================================================
-        // Input Provider Resolution
+        // Provider Resolution
         // ====================================================================
 
         /// <summary>
-        /// Finds the IMicrophoneInputProvider. Checks the assigned reference first,
-        /// then searches the same GameObject, then searches children.
+        /// Finds the IVoiceDetectionProvider. Checks assigned reference first,
+        /// then searches the scene.
         /// </summary>
-        private void ResolveInputProvider()
+        private void ResolveProvider()
         {
             // Use assigned reference if available
-            if (microphoneInput != null)
+            if (defaultProvider != null)
             {
-                _inputProvider = microphoneInput;
+                _provider = defaultProvider;
+                Debug.Log("[PlayerVoiceMovement] Using assigned LoudnessDetectionProvider.");
                 return;
             }
 
-            // Try to find on same GameObject
-            _inputProvider = GetComponent<IMicrophoneInputProvider>();
+            // Search same GameObject
+            _provider = GetComponent<IVoiceDetectionProvider>();
+            if (_provider != null) return;
 
-            if (_inputProvider != null) return;
+            // Search children
+            _provider = GetComponentInChildren<IVoiceDetectionProvider>();
+            if (_provider != null) return;
 
-            // Try to find on children
-            _inputProvider = GetComponentInChildren<IMicrophoneInputProvider>();
-
-            if (_inputProvider != null) return;
-
-            // Try to find anywhere in scene
-            var found = FindAnyObjectByType<MicrophoneInput>();
+            // Search anywhere in scene
+            var found = FindAnyObjectByType<LoudnessDetectionProvider>();
             if (found != null)
             {
-                _inputProvider = found;
-                Debug.Log("[PlayerVoiceMovement] Found MicrophoneInput in scene.");
+                _provider = found;
+                Debug.Log("[PlayerVoiceMovement] Found LoudnessDetectionProvider in scene.");
                 return;
             }
 
-            Debug.LogError("[PlayerVoiceMovement] No IMicrophoneInputProvider found! " +
-                "Assign a MicrophoneInput component.");
+            Debug.LogError("[PlayerVoiceMovement] No IVoiceDetectionProvider found! " +
+                "Add a LoudnessDetectionProvider component to the scene.");
         }
 
         // ====================================================================
@@ -273,28 +290,24 @@ namespace HotShipHai.Player
         // ====================================================================
 
         /// <summary>
-        /// Allows hot-swapping the input provider at runtime.
-        /// Call this to switch from loudness detection to AI classification, etc.
+        /// Hot-swap the voice detection provider at runtime.
+        /// Use this to switch from loudness detection to AI classification.
         /// </summary>
-        public void SetInputProvider(IMicrophoneInputProvider provider)
+        public void SetInputProvider(IVoiceDetectionProvider provider)
         {
-            _inputProvider = provider;
-            Debug.Log($"[PlayerVoiceMovement] Input provider changed to: " +
+            _provider = provider;
+            Debug.Log($"[PlayerVoiceMovement] Provider changed to: " +
                 $"{provider?.GetType().Name ?? "null"}");
         }
 
-        /// <summary>
-        /// Unlocks the cursor (useful for menus / pause).
-        /// </summary>
+        /// <summary>Unlock cursor (for menus / pause).</summary>
         public void UnlockCursor()
         {
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
         }
 
-        /// <summary>
-        /// Re-locks the cursor to center screen.
-        /// </summary>
+        /// <summary>Re-lock cursor to center screen.</summary>
         public void LockCursor()
         {
             Cursor.lockState = CursorLockMode.Locked;

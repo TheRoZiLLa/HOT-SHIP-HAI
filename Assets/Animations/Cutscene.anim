@@ -496,24 +496,15 @@ AnimationClip:
       - serializedVersion: 3
         time: 15.716666
         value: {x: 4.73, y: 2.695, z: -3.067}
-        inSlope: {x: 0.22120501, y: -1.3431326, z: -1.2491567}
-        outSlope: {x: 0.22120501, y: -1.3431326, z: -1.2491567}
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: {x: 0.33333334, y: 0.33333334, z: 0.33333334}
-        outWeight: {x: 0.33333334, y: 0.33333334, z: 0.33333334}
-      - serializedVersion: 3
-        time: 16.483334
-        value: {x: 4.852, y: 1.432, z: -3.845}
-        inSlope: {x: 0, y: -0.020425908, z: 0}
-        outSlope: {x: 0, y: -0.020425908, z: 0}
+        inSlope: {x: 0.21857165, y: -1.3271432, z: -1.234286}
+        outSlope: {x: 0.21857165, y: -1.3271432, z: -1.234286}
         tangentMode: 0
         weightedMode: 0
         inWeight: {x: 0.33333334, y: 0.33333334, z: 0.33333334}
         outWeight: {x: 0.33333334, y: 0.33333334, z: 0.33333334}
       - serializedVersion: 3
         time: 16.5
-        value: {x: 4.786, y: 1.428, z: -3.841}
+        value: {x: 4.852, y: 1.432, z: -3.845}
         inSlope: {x: 0, y: 0, z: 0}
         outSlope: {x: 0, y: 0, z: 0}
         tangentMode: 0
@@ -842,24 +833,15 @@ AnimationClip:
       - serializedVersion: 3
         time: 15.716666
         value: 4.73
-        inSlope: 0.22120501
-        outSlope: 0.22120501
-        tangentMode: 136
-        weightedMode: 0
-        inWeight: 0.33333334
-        outWeight: 0.33333334
-      - serializedVersion: 3
-        time: 16.483334
-        value: 4.852
-        inSlope: 0
-        outSlope: 0
+        inSlope: 0.21857165
+        outSlope: 0.21857165
         tangentMode: 136
         weightedMode: 0
         inWeight: 0.33333334
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 16.5
-        value: 4.786
+        value: 4.852
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -1142,24 +1124,15 @@ AnimationClip:
       - serializedVersion: 3
         time: 15.716666
         value: 2.695
-        inSlope: -1.3431326
-        outSlope: -1.3431326
-        tangentMode: 136
-        weightedMode: 0
-        inWeight: 0.33333334
-        outWeight: 0.33333334
-      - serializedVersion: 3
-        time: 16.483334
-        value: 1.432
-        inSlope: -0.020425908
-        outSlope: -0.020425908
+        inSlope: -1.3271432
+        outSlope: -1.3271432
         tangentMode: 136
         weightedMode: 0
         inWeight: 0.33333334
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 16.5
-        value: 1.428
+        value: 1.432
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -1442,24 +1415,15 @@ AnimationClip:
       - serializedVersion: 3
         time: 15.716666
         value: -3.067
-        inSlope: -1.2491567
-        outSlope: -1.2491567
-        tangentMode: 136
-        weightedMode: 0
-        inWeight: 0.33333334
-        outWeight: 0.33333334
-      - serializedVersion: 3
-        time: 16.483334
-        value: -3.845
-        inSlope: 0
-        outSlope: 0
+        inSlope: -1.234286
+        outSlope: -1.234286
         tangentMode: 136
         weightedMode: 0
         inWeight: 0.33333334
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 16.5
-        value: -3.841
+        value: -3.845
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -2174,42 +2138,42 @@ AnimationClip:
   - time: 0
     functionName: PlaySpecificAudio
     data: 
-    objectReferenceParameter: {fileID: 0}
+    objectReferenceParameter: {fileID: 8300000, guid: 97e401561a94c99418f9acf3af6ca5ac, type: 3}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
   - time: 0.33333334
     functionName: PlaySpecificAudio
     data: 
-    objectReferenceParameter: {fileID: 0}
+    objectReferenceParameter: {fileID: 8300000, guid: df42b3c312f85024b93f9d0628148b58, type: 3}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
   - time: 0.6666667
     functionName: PlaySpecificAudio
     data: 
-    objectReferenceParameter: {fileID: 0}
+    objectReferenceParameter: {fileID: 8300000, guid: 41190bb3418bb1e4d835523c5051f886, type: 3}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
   - time: 1
     functionName: PlaySpecificAudio
     data: 
-    objectReferenceParameter: {fileID: 0}
+    objectReferenceParameter: {fileID: 8300000, guid: df42b3c312f85024b93f9d0628148b58, type: 3}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
   - time: 1.3333334
     functionName: PlaySpecificAudio
     data: 
-    objectReferenceParameter: {fileID: 0}
+    objectReferenceParameter: {fileID: 8300000, guid: 97e401561a94c99418f9acf3af6ca5ac, type: 3}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
   - time: 1.6666666
     functionName: PlaySpecificAudio
     data: 
-    objectReferenceParameter: {fileID: 0}
+    objectReferenceParameter: {fileID: 8300000, guid: e4c748b65ae4f114d83a9a55d5a19227, type: 3}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0

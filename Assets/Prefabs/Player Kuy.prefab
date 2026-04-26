@@ -10,8 +10,11 @@ GameObject:
   m_Component:
   - component: {fileID: 3872652612106339762}
   - component: {fileID: 4495784779436895312}
+  - component: {fileID: 5346220219792080609}
+  - component: {fileID: 631756877541726469}
+  - component: {fileID: 4912223363282152808}
   m_Layer: 3
-  m_Name: MicrophoneManager
+  m_Name: VoiceSystem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -47,9 +50,57 @@ MonoBehaviour:
   preferredDeviceName: 
   sampleRate: 44100
   sampleWindow: 512
-  voiceThreshold: 0.01
-  smoothingSpeed: 12
   sensitivity: 5
+--- !u!114 &5346220219792080609
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 449643438779062451}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b3197568b3e464408cd7fc374cc7da1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  micInput: {fileID: 4495784779436895312}
+  noiseFilter: {fileID: 631756877541726469}
+  patternAnalyzer: {fileID: 4912223363282152808}
+--- !u!114 &631756877541726469
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 449643438779062451}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d9a7d8214ccb1743b87a402d4f8042c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  noiseFloor: 0.015
+  smoothingSpeed: 10
+  debounceTime: 0.05
+--- !u!114 &4912223363282152808
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 449643438779062451}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c92f8d1d3aa4bdc4591ffb5e33798a7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sustainTimeForWalk: 0.25
+  sustainStabilityThreshold: 0.15
+  burstCountForRun: 3
+  burstWindowTime: 1.5
+  peakThreshold: 0.12
+  peakCooldown: 0.12
+  maxBurstDuration: 0.35
+  idleTimeout: 0.3
 --- !u!1 &744313887864454700
 GameObject:
   m_ObjectHideFlags: 0
@@ -63,6 +114,7 @@ GameObject:
   - component: {fileID: 3079045717756286386}
   - component: {fileID: 410163736694907382}
   - component: {fileID: 3173815954569009277}
+  - component: {fileID: 4037318752170212031}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -175,13 +227,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cb13fca8010a654fa02de88c8a94b1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  microphoneInput: {fileID: 4495784779436895312}
-  minMoveSpeed: 1
-  maxMoveSpeed: 8
+  defaultProvider: {fileID: 5346220219792080609}
+  walkSpeed: 3
+  runSpeed: 7
   acceleration: 8
   mouseSensitivity: 3
   rotationSmoothing: 15
   gravity: -20
+--- !u!114 &4037318752170212031
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 744313887864454700}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24cea3e0af4b3284f985d221407436f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  provider: {fileID: 0}
+  playerMovement: {fileID: 0}
+  micInput: {fileID: 0}
+  toggleKey: 282
+  showOnStart: 1
 --- !u!1 &3053804396782268864
 GameObject:
   m_ObjectHideFlags: 0
@@ -297,7 +366,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad65fade53ba0514eb5bff13644f20d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  micInput: {fileID: 4495784779436895312}
+  voiceProvider: {fileID: 0}
   playerMovement: {fileID: 3173815954569009277}
   volumeFillBar: {fileID: 7384408590386273115}
   volumeBarBackground: {fileID: 7286013506305374888}
@@ -526,6 +595,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timeToDieInSun: 3
+  deathSFX: {fileID: 0}
+  deathVFXPrefab: {fileID: 0}
+  deathSceneName: 
 --- !u!1 &6683165706938917140
 GameObject:
   m_ObjectHideFlags: 0

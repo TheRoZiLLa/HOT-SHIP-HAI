@@ -1,7 +1,7 @@
 // ============================================================================
 // MicrophoneInput.cs
-// Captures real-time microphone audio and computes RMS loudness.
-// Implements IMicrophoneInputProvider for hot-swappable input systems.
+// Pure audio capture from the system microphone via Unity's Microphone API.
+// Computes RMS loudness and exposes raw sample data for downstream consumers.
 // Compatible with Unity 6000.0.72f1
 // ============================================================================
 
@@ -10,10 +10,11 @@ using UnityEngine;
 namespace HotShipHai.Voice
 {
     /// <summary>
-    /// Captures microphone audio using Unity's Microphone API and computes
-    /// a smoothed RMS loudness value in [0, 1]. Attach to any GameObject.
+    /// Captures microphone audio and computes raw RMS loudness.
+    /// This is a pure capture component — all filtering, pattern analysis,
+    /// and state detection live in separate classes downstream.
     /// </summary>
-    public class MicrophoneInput : MonoBehaviour, IMicrophoneInputProvider
+    public class MicrophoneInput : MonoBehaviour
     {
         // ====================================================================
         // Inspector Settings
@@ -31,26 +32,25 @@ namespace HotShipHai.Voice
         [Range(64, 2048)]
         [SerializeField] private int sampleWindow = 512;
 
-        [Tooltip("Minimum loudness to consider as voice input (filters background noise).")]
-        [Range(0f, 0.1f)]
-        [SerializeField] private float voiceThreshold = 0.01f;
-
-        [Tooltip("Smoothing factor for loudness transitions. Lower = smoother, Higher = snappier.")]
-        [Range(1f, 30f)]
-        [SerializeField] private float smoothingSpeed = 12f;
-
         [Tooltip("Multiplier to amplify quiet microphones. Increase if your mic is too quiet.")]
         [Range(1f, 20f)]
         [SerializeField] private float sensitivity = 5f;
 
         // ====================================================================
-        // IMicrophoneInputProvider Implementation
+        // Public Read-Only Properties
         // ====================================================================
 
-        public float Loudness => _smoothedLoudness;
-        public bool IsVoiceActive => _smoothedLoudness > voiceThreshold;
-        public bool IsDeviceReady => _isRecording;
-        public string DeviceName => _activeMicDevice ?? "None";
+        /// <summary>Raw RMS loudness in [0, 1] (after sensitivity, before filtering).</summary>
+        public float RawLoudness => _rawLoudness;
+
+        /// <summary>Whether the microphone is currently recording.</summary>
+        public bool IsRecording => _isRecording;
+
+        /// <summary>Name of the active microphone device.</summary>
+        public string ActiveDeviceName => _activeMicDevice ?? "None";
+
+        /// <summary>The configured sample rate.</summary>
+        public int SampleRate => sampleRate;
 
         // ====================================================================
         // Internal State
@@ -60,7 +60,6 @@ namespace HotShipHai.Voice
         private string _activeMicDevice;
         private bool _isRecording;
         private float _rawLoudness;
-        private float _smoothedLoudness;
         private float[] _sampleBuffer;
 
         // ====================================================================
@@ -69,45 +68,32 @@ namespace HotShipHai.Voice
 
         private void Start()
         {
-            Initialize();
+            StartRecording();
         }
 
         private void OnDestroy()
         {
-            Shutdown();
+            StopRecording();
         }
 
         private void Update()
         {
             if (!_isRecording) return;
-
-            _rawLoudness = CalculateRmsLoudness();
-            _rawLoudness = Mathf.Clamp01(_rawLoudness * sensitivity);
-
-            // Apply threshold — below threshold means silence
-            if (_rawLoudness < voiceThreshold)
-            {
-                _rawLoudness = 0f;
-            }
-
-            // Smooth transitions to avoid jittery movement
-            _smoothedLoudness = Mathf.Lerp(
-                _smoothedLoudness,
-                _rawLoudness,
-                Time.deltaTime * smoothingSpeed
-            );
+            _rawLoudness = Mathf.Clamp01(CalculateRmsLoudness() * sensitivity);
         }
 
         // ====================================================================
-        // IMicrophoneInputProvider Methods
+        // Recording Control
         // ====================================================================
 
-        public void Initialize()
+        /// <summary>
+        /// Begin capturing audio from the system microphone.
+        /// Safe to call multiple times — stops existing recording first.
+        /// </summary>
+        public void StartRecording()
         {
-            // Clean up any existing recording
-            Shutdown();
+            StopRecording();
 
-            // Find available microphone
             _activeMicDevice = FindMicrophone();
 
             if (string.IsNullOrEmpty(_activeMicDevice))
@@ -117,7 +103,6 @@ namespace HotShipHai.Voice
                 return;
             }
 
-            // Allocate sample buffer
             _sampleBuffer = new float[sampleWindow];
 
             // Start recording — loop with a 1-second buffer for low latency
@@ -135,7 +120,10 @@ namespace HotShipHai.Voice
                 $"@ {sampleRate}Hz");
         }
 
-        public void Shutdown()
+        /// <summary>
+        /// Stop capturing audio and release the microphone.
+        /// </summary>
+        public void StopRecording()
         {
             if (_isRecording && !string.IsNullOrEmpty(_activeMicDevice))
             {
@@ -144,7 +132,6 @@ namespace HotShipHai.Voice
             }
 
             _isRecording = false;
-            _smoothedLoudness = 0f;
             _rawLoudness = 0f;
 
             if (_micClip != null)
@@ -231,15 +218,5 @@ namespace HotShipHai.Voice
             Debug.Log($"[MicrophoneInput] Using default device: {devices[0]}");
             return devices[0];
         }
-
-        // ====================================================================
-        // Public Getters (for UI / Debug)
-        // ====================================================================
-
-        /// <summary>Returns the raw (unsmoothed) loudness for debug display.</summary>
-        public float RawLoudness => _rawLoudness;
-
-        /// <summary>Returns the configured voice threshold.</summary>
-        public float VoiceThreshold => voiceThreshold;
     }
 }

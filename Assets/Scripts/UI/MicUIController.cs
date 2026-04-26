@@ -1,6 +1,8 @@
 // ============================================================================
 // MicUIController.cs
-// Live microphone debug UI — volume bar, loudness, speed, device status.
+// Legacy Canvas-based UI controller for volume visualization.
+// Adapted to work with the new LoudnessDetectionProvider pipeline.
+// NOTE: For debugging, use VoiceDebugUI instead (IMGUI, zero setup).
 // Compatible with Unity 6000.0.72f1
 // ============================================================================
 
@@ -11,10 +13,15 @@ using HotShipHai.Player;
 
 namespace HotShipHai.UI
 {
+    /// <summary>
+    /// Canvas-based volume bar and debug text display.
+    /// Works with the new voice detection pipeline.
+    /// Consider using <see cref="VoiceDebugUI"/> instead for quick debugging.
+    /// </summary>
     public class MicUIController : MonoBehaviour
     {
         [Header("References")]
-        [SerializeField] private MicrophoneInput micInput;
+        [SerializeField] private LoudnessDetectionProvider voiceProvider;
         [SerializeField] private PlayerVoiceMovement playerMovement;
 
         [Header("Volume Bar")]
@@ -46,14 +53,14 @@ namespace HotShipHai.UI
         private void Start()
         {
             // Auto-find references if not assigned
-            if (micInput == null)
-                micInput = FindAnyObjectByType<MicrophoneInput>();
+            if (voiceProvider == null)
+                voiceProvider = FindAnyObjectByType<LoudnessDetectionProvider>();
 
             if (playerMovement == null)
                 playerMovement = FindAnyObjectByType<PlayerVoiceMovement>();
 
-            if (micInput == null)
-                Debug.LogWarning("[MicUIController] MicrophoneInput not found!");
+            if (voiceProvider == null)
+                Debug.LogWarning("[MicUIController] LoudnessDetectionProvider not found!");
 
             if (playerMovement == null)
                 Debug.LogWarning("[MicUIController] PlayerVoiceMovement not found!");
@@ -72,9 +79,9 @@ namespace HotShipHai.UI
 
         private void UpdateVolumeBar()
         {
-            if (volumeFillBar == null || micInput == null) return;
+            if (volumeFillBar == null || voiceProvider == null) return;
 
-            float loudness = micInput.Loudness;
+            float loudness = voiceProvider.Loudness;
             volumeFillBar.fillAmount = loudness;
 
             // Color gradient based on loudness level
@@ -93,10 +100,11 @@ namespace HotShipHai.UI
 
         private void UpdateDebugText()
         {
-            if (micInput != null && loudnessText != null)
+            if (voiceProvider != null && loudnessText != null)
             {
-                loudnessText.text = $"Loudness: {micInput.Loudness:F3} " +
-                    $"(Raw: {micInput.RawLoudness:F3})";
+                loudnessText.text = $"Loudness: {voiceProvider.Loudness:F3} " +
+                    $"(Raw: {voiceProvider.RawLoudness:F3}) " +
+                    $"[{voiceProvider.CurrentState}]";
             }
 
             if (playerMovement != null && speedText != null)
@@ -105,10 +113,10 @@ namespace HotShipHai.UI
                     $"Target: {playerMovement.TargetSpeed:F2}";
             }
 
-            if (micInput != null && micStatusText != null)
+            if (voiceProvider != null && micStatusText != null)
             {
-                string status = micInput.IsDeviceReady
-                    ? $"<color=#55FF55>MIC ACTIVE</color>: {micInput.DeviceName}"
+                string status = voiceProvider.IsDeviceReady
+                    ? $"<color=#55FF55>MIC ACTIVE</color>: {voiceProvider.DeviceName}"
                     : "<color=#FF5555>MIC NOT DETECTED</color>";
                 micStatusText.text = status;
                 micStatusText.supportRichText = true;
@@ -117,21 +125,19 @@ namespace HotShipHai.UI
 
         private void UpdateWaveform()
         {
-            if (waveformBars == null || waveformBars.Length == 0 || micInput == null)
+            if (waveformBars == null || waveformBars.Length == 0 || voiceProvider == null)
                 return;
 
-            float loudness = micInput.Loudness;
+            float loudness = voiceProvider.Loudness;
 
             for (int i = 0; i < waveformBars.Length; i++)
             {
                 if (waveformBars[i] == null) continue;
 
-                // Create varied heights using sine offsets for visual interest
                 float offset = (float)i / waveformBars.Length * Mathf.PI * 2f;
                 float wave = Mathf.Sin(Time.time * 5f + offset) * 0.3f + 0.7f;
                 float targetH = loudness * waveformMaxHeight * wave;
 
-                // Ensure minimum visible height when there IS sound
                 if (loudness > 0.01f)
                     targetH = Mathf.Max(targetH, 4f);
 
