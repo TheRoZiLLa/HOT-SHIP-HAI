@@ -1564,7 +1564,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   randomClips:
-  - {fileID: 0}
+  - {fileID: 8300000, guid: 942652ee13403f249b0bf8d4ed47071c, type: 3}
+  - {fileID: 8300000, guid: 7b00136585a412649a1d6e49a2753ff4, type: 3}
   playChance: 1
 --- !u!114 &1832454832
 MonoBehaviour:
