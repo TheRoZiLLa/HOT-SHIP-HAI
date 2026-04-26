@@ -1,5 +1,16 @@
 {
+  "scopedRegistries": [
+    {
+      "name": "npm",
+      "url": "https://registry.npmjs.com",
+      "scopes": [
+        "com.github.asus4"
+      ]
+    }
+  ],
   "dependencies": {
+    "com.github.asus4.tflite": "2.19.0-p3",
+    "com.github.asus4.tflite.common": "2.19.0-p3",
     "com.unity.ai.navigation": "2.0.12",
     "com.unity.collab-proxy": "2.12.4",
     "com.unity.ide.rider": "3.0.39",

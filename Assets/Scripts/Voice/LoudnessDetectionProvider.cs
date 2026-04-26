@@ -2,7 +2,7 @@
 // LoudnessDetectionProvider.cs
 // Default IVoiceDetectionProvider that wires the full audio pipeline:
 //   MicrophoneInput → NoiseFilter → VoicePatternAnalyzer
-// Swap this component with FutureAIModelProvider (or your own) to change
+// Swap this component with TeachableMachineProvider (or your own) to change
 // the detection backend without touching the movement system.
 // Compatible with Unity 6000.0.72f1
 // ============================================================================

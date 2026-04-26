@@ -105,8 +105,9 @@ namespace HotShipHai.Voice
 
             _sampleBuffer = new float[sampleWindow];
 
-            // Start recording — loop with a 1-second buffer for low latency
-            _micClip = Microphone.Start(_activeMicDevice, true, 1, sampleRate);
+            // Start recording — loop with a 2-second buffer
+            // (AI model needs ~1s of audio, 2s buffer avoids circular overrun)
+            _micClip = Microphone.Start(_activeMicDevice, true, 2, sampleRate);
 
             if (_micClip == null)
             {
@@ -140,6 +141,62 @@ namespace HotShipHai.Voice
                 _micClip = null;
             }
         }
+
+        // ====================================================================
+        // Raw Audio Access — for AI providers (spectrogram, TFLite)
+        // ====================================================================
+
+        /// <summary>
+        /// Copies the most recent PCM samples into the provided buffer.
+        /// Returns the number of samples actually written.
+        /// Used by AI providers for spectrogram computation and model inference.
+        /// </summary>
+        /// <param name="buffer">Destination buffer. Length determines how many samples to copy.</param>
+        /// <returns>Number of samples written, or 0 if not recording.</returns>
+        public int GetLatestSamples(float[] buffer)
+        {
+            if (_micClip == null || !_isRecording || buffer == null || buffer.Length == 0)
+                return 0;
+
+            int micPosition = Microphone.GetPosition(_activeMicDevice);
+            if (micPosition <= 0) return 0;
+
+            int clipSamples = _micClip.samples;
+            int requested = Mathf.Min(buffer.Length, clipSamples);
+
+            // Calculate the actual start position in the circular buffer
+            int startPos = micPosition - requested;
+            
+            if (startPos < 0)
+            {
+                // We need to wrap around to the end of the circular buffer
+                startPos += clipSamples; 
+                
+                int tailCount = clipSamples - startPos; // Samples to read from the end of the clip
+                int headCount = requested - tailCount;  // Samples to read from the start of the clip
+
+                // Read from the end of the clip
+                float[] tailBuf = new float[tailCount];
+                _micClip.GetData(tailBuf, startPos);
+
+                // Read from the start of the clip
+                float[] headBuf = new float[headCount];
+                _micClip.GetData(headBuf, 0);
+
+                // Stitch them together into the output buffer
+                System.Array.Copy(tailBuf, 0, buffer, 0, tailCount);
+                System.Array.Copy(headBuf, 0, buffer, tailCount, headCount);
+            }
+            else
+            {
+                // No wrap-around needed, read continuously
+                _micClip.GetData(buffer, startPos);
+            }
+            return requested;
+        }
+
+        /// <summary>The internal AudioClip used for recording.</summary>
+        public AudioClip MicClip => _micClip;
 
         // ====================================================================
         // Loudness Calculation

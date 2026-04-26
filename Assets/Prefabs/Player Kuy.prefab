@@ -10,9 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 3872652612106339762}
   - component: {fileID: 4495784779436895312}
-  - component: {fileID: 5346220219792080609}
   - component: {fileID: 631756877541726469}
-  - component: {fileID: 4912223363282152808}
+  - component: {fileID: 4010515866089516523}
   m_Layer: 3
   m_Name: VoiceSystem
   m_TagString: Untagged
@@ -51,21 +50,6 @@ MonoBehaviour:
   sampleRate: 44100
   sampleWindow: 512
   sensitivity: 5
---- !u!114 &5346220219792080609
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 449643438779062451}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0b3197568b3e464408cd7fc374cc7da1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  micInput: {fileID: 4495784779436895312}
-  noiseFilter: {fileID: 631756877541726469}
-  patternAnalyzer: {fileID: 4912223363282152808}
 --- !u!114 &631756877541726469
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -81,7 +65,7 @@ MonoBehaviour:
   noiseFloor: 0.015
   smoothingSpeed: 10
   debounceTime: 0.05
---- !u!114 &4912223363282152808
+--- !u!114 &4010515866089516523
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -90,17 +74,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 449643438779062451}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c92f8d1d3aa4bdc4591ffb5e33798a7a, type: 3}
+  m_Script: {fileID: 11500000, guid: c73ffcd57f011ee4cad9431e9a812681, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sustainTimeForWalk: 0.25
-  sustainStabilityThreshold: 0.15
-  burstCountForRun: 3
-  burstWindowTime: 1.5
-  peakThreshold: 0.12
-  peakCooldown: 0.12
-  maxBurstDuration: 0.35
-  idleTimeout: 0.3
+  labelsFile: {fileID: 4900000, guid: 4fa6928868e81a2418d08c5417a587b8, type: 3}
+  tfliteModelFileName: soundclassifier_with_metadata.tflite
+  modelSubFolder: AI/V1
+  minimumConfidence: 0.3
+  classificationInterval: 0.05
+  smoothingWindowSize: 1
+  fftSize: 0
+  hopLength: 0
+  melBins: 0
+  timeFrames: 0
+  sampleRate: 0
+  micInput: {fileID: 4495784779436895312}
+  noiseFilter: {fileID: 631756877541726469}
+  idleTimeout: 0.05
 --- !u!1 &744313887864454700
 GameObject:
   m_ObjectHideFlags: 0
@@ -227,10 +217,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cb13fca8010a654fa02de88c8a94b1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  defaultProvider: {fileID: 5346220219792080609}
-  walkSpeed: 3
-  runSpeed: 7
+  defaultProvider: {fileID: 0}
+  minWalkSpeed: 1.5
+  maxWalkSpeed: 4
+  minRunSpeed: 5
+  maxRunSpeed: 9
   acceleration: 8
+  decelerationMultiplier: 3
   mouseSensitivity: 3
   rotationSmoothing: 15
   gravity: -20
@@ -246,7 +239,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24cea3e0af4b3284f985d221407436f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  provider: {fileID: 0}
   playerMovement: {fileID: 0}
   micInput: {fileID: 0}
   toggleKey: 282

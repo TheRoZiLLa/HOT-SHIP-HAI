@@ -31,7 +31,7 @@ namespace HotShipHai.Voice
         [Tooltip("Smoothing speed for loudness transitions. " +
             "Lower = smoother (less jitter), Higher = more responsive.")]
         [Range(1f, 30f)]
-        [SerializeField] private float smoothingSpeed = 20f;
+        [SerializeField] private float smoothingSpeed = 25f;
 
         [Header("Debounce")]
         [Tooltip("Minimum time (seconds) that loudness must stay above threshold " +

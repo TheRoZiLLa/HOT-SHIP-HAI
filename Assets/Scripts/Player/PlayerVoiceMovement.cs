@@ -48,8 +48,13 @@ namespace HotShipHai.Player
 
         [Tooltip("How quickly the character accelerates / decelerates. " +
             "Higher = snappier response.")]
-        [Range(1f, 20f)]
-        [SerializeField] private float acceleration = 8f;
+        [Range(1f, 30f)]
+        [SerializeField] private float acceleration = 12f;
+
+        [Tooltip("Deceleration multiplier relative to acceleration. " +
+            "Higher = character stops faster when voice drops.")]
+        [Range(1f, 5f)]
+        [SerializeField] private float decelerationMultiplier = 3f;
 
         [Header("Mouse Rotation")]
         [Tooltip("Horizontal mouse sensitivity for player rotation.")]
@@ -173,22 +178,30 @@ namespace HotShipHai.Player
             if (_provider == null || !_provider.IsDeviceReady)
             {
                 TargetSpeed = 0f;
-                _currentSpeed = Mathf.Lerp(_currentSpeed, 0f, Time.deltaTime * acceleration);
+                _currentSpeed = Mathf.Lerp(_currentSpeed, 0f,
+                    Time.deltaTime * acceleration * decelerationMultiplier);
                 return;
             }
 
-            // Use loudness to scale speed within each state's range
+            // ═══════════════════════════════════════════════════════════════
+            // HYBRID SYSTEM:
+            //   AI (TeachableMachineProvider) → decides STATE (Idle/Walk/Run)
+            //   Volume (MicrophoneInput)      → decides SPEED (quiet=slow, loud=fast)
+            // ═══════════════════════════════════════════════════════════════
+
+            // Volume: scale speed within the state's range
             float loudness = Mathf.Clamp01(_provider.Loudness);
 
+            // AI State: determines which speed range to use
             switch (_provider.CurrentState)
             {
                 case VoiceMovementState.Walk:
-                    // Quiet voice = minWalkSpeed, loud voice = maxWalkSpeed
+                    // AI says "Walk จิ๊ดดดด" → quiet voice = slow walk, loud voice = fast walk
                     TargetSpeed = Mathf.Lerp(minWalkSpeed, maxWalkSpeed, loudness);
                     break;
 
                 case VoiceMovementState.Run:
-                    // Quiet bursts = minRunSpeed, loud bursts = maxRunSpeed
+                    // AI says "Run จิ๊ด จิ๊ด จิ๊ด" → quiet bursts = slow run, loud bursts = fast run
                     TargetSpeed = Mathf.Lerp(minRunSpeed, maxRunSpeed, loudness);
                     break;
 
@@ -198,11 +211,16 @@ namespace HotShipHai.Player
                     break;
             }
 
-            // Smoothly accelerate / decelerate
+            // Accelerate faster when speeding up, decelerate faster when slowing
+            bool isDecelerating = TargetSpeed < _currentSpeed;
+            float rate = isDecelerating
+                ? acceleration * decelerationMultiplier
+                : acceleration;
+
             _currentSpeed = Mathf.Lerp(
                 _currentSpeed,
                 TargetSpeed,
-                Time.deltaTime * acceleration
+                Time.deltaTime * rate
             );
 
             // Kill tiny residual speed to stop cleanly
@@ -272,17 +290,25 @@ namespace HotShipHai.Player
             _provider = GetComponentInChildren<IVoiceDetectionProvider>();
             if (_provider != null) return;
 
-            // Search anywhere in scene
-            var found = FindAnyObjectByType<LoudnessDetectionProvider>();
-            if (found != null)
+            // Search anywhere in scene — prefer AI provider over loudness
+            var aiProvider = FindAnyObjectByType<TeachableMachineProvider>();
+            if (aiProvider != null && aiProvider.enabled)
             {
-                _provider = found;
+                _provider = aiProvider;
+                Debug.Log("[PlayerVoiceMovement] Found TeachableMachineProvider (AI) in scene.");
+                return;
+            }
+
+            var loudnessProvider = FindAnyObjectByType<LoudnessDetectionProvider>();
+            if (loudnessProvider != null)
+            {
+                _provider = loudnessProvider;
                 Debug.Log("[PlayerVoiceMovement] Found LoudnessDetectionProvider in scene.");
                 return;
             }
 
             Debug.LogError("[PlayerVoiceMovement] No IVoiceDetectionProvider found! " +
-                "Add a LoudnessDetectionProvider component to the scene.");
+                "Add a TeachableMachineProvider or LoudnessDetectionProvider to the scene.");
         }
 
         // ====================================================================

@@ -69,8 +69,8 @@ namespace HotShipHai.Voice
 
         [Header("Idle Transition")]
         [Tooltip("How long (seconds) after voice stops before returning to Idle.")]
-        [Range(0.1f, 1.0f)]
-        [SerializeField] private float idleTimeout = 0.35f;
+        [Range(0.05f, 1.0f)]
+        [SerializeField] private float idleTimeout = 0.12f;
 
         // ====================================================================
         // Public Read-Only Properties
