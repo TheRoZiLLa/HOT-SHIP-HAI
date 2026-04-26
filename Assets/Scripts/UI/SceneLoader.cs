@@ -27,4 +27,14 @@ public class SceneLoader : MonoBehaviour
             Debug.LogWarning("Scene to load is not set on " + gameObject.name);
         }
     }
+
+    /// <summary>
+    /// Call this method from a UI Button's OnClick event to exit the game
+    /// </summary>
+    public void ExitGame()
+    {
+        Debug.Log("Exiting Game...");
+        // Application.Quit() closes the built game. It does NOT stop the Unity Editor playback!
+        Application.Quit();
+    }
 }
