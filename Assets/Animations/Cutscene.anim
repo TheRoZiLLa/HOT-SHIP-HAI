@@ -558,7 +558,7 @@ AnimationClip:
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 16.5
+    m_StopTime: 16.75
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -2174,42 +2174,49 @@ AnimationClip:
   - time: 0
     functionName: PlaySpecificAudio
     data: 
-    objectReferenceParameter: {fileID: 8300000, guid: e481fe97a602e984cb5b861c508dc08b, type: 3}
+    objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
   - time: 0.33333334
     functionName: PlaySpecificAudio
     data: 
-    objectReferenceParameter: {fileID: 8300000, guid: a0f9b5888910d4f479c3116391569cf1, type: 3}
+    objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
   - time: 0.6666667
     functionName: PlaySpecificAudio
     data: 
-    objectReferenceParameter: {fileID: 8300000, guid: 0654a97295b9cce4488143b2a4dd62f8, type: 3}
+    objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
   - time: 1
     functionName: PlaySpecificAudio
     data: 
-    objectReferenceParameter: {fileID: 8300000, guid: a0f9b5888910d4f479c3116391569cf1, type: 3}
+    objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
   - time: 1.3333334
     functionName: PlaySpecificAudio
     data: 
-    objectReferenceParameter: {fileID: 8300000, guid: 0654a97295b9cce4488143b2a4dd62f8, type: 3}
+    objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
   - time: 1.6666666
     functionName: PlaySpecificAudio
     data: 
-    objectReferenceParameter: {fileID: 8300000, guid: 11b4058d6a7565c42992a76ab8a50531, type: 3}
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 16.75
+    functionName: OnAnimationEnd
+    data: 
+    objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0

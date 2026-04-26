@@ -7147,6 +7147,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: -1824369248892370767, guid: 488bb16f6ecf8504d9e33459d896abf1, type: 3}
+      propertyPath: deathSceneName
+      value: DeathScene
+      objectReference: {fileID: 0}
+    - target: {fileID: -1824369248892370767, guid: 488bb16f6ecf8504d9e33459d896abf1, type: 3}
       propertyPath: timeToDieInSun
       value: 1.5
       objectReference: {fileID: 0}

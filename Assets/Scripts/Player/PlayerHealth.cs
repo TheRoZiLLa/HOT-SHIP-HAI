@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerHealth : MonoBehaviour
 {
@@ -10,6 +11,10 @@ public class PlayerHealth : MonoBehaviour
 
     [Header("Visual Settings")]
     public GameObject deathVFXPrefab; // Prefab spawned when the player dies
+
+    [Header("Scene Transition Settings")]
+    [Tooltip("The exact name of the scene you want to load when the player dies")]
+    public string deathSceneName;
 
     private bool isDying = false;
     private float sunExposureTimer = 0f;
@@ -85,7 +90,15 @@ public class PlayerHealth : MonoBehaviour
             Instantiate(deathVFXPrefab, transform.position, Quaternion.identity);
         }
 
-        Debug.Log("Player has died from sunlight.");
+        Debug.Log("Player has died from sunlight or metal.");
+        
+        // Load the death scene if a name is provided
+        if (!string.IsNullOrEmpty(deathSceneName))
+        {
+            Debug.Log("Loading death scene: " + deathSceneName);
+            SceneManager.LoadScene(deathSceneName);
+        }
+
         // Add death logic here, such as showing death UI or destroying the object
         gameObject.SetActive(false);
     }
