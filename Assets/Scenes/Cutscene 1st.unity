@@ -2112,6 +2112,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f787ee5037eaf3b458250d86de45ed4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  targetImage: {fileID: 0}
+  defaultTransitionDuration: 1
 --- !u!82 &1193812645
 AudioSource:
   m_ObjectHideFlags: 0
@@ -3419,16 +3421,28 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: c0621c2f8db1f554d9a62e922e7cdb19, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 51.575287
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c0621c2f8db1f554d9a62e922e7cdb19, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 51.575287
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c0621c2f8db1f554d9a62e922e7cdb19, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 51.575283
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c0621c2f8db1f554d9a62e922e7cdb19, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2.56
+      value: 1.695
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c0621c2f8db1f554d9a62e922e7cdb19, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.04
+      value: 0.236
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c0621c2f8db1f554d9a62e922e7cdb19, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -3.24
+      value: -4.46
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c0621c2f8db1f554d9a62e922e7cdb19, type: 3}
       propertyPath: m_LocalRotation.w

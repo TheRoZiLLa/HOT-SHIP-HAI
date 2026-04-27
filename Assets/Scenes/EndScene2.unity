@@ -2088,7 +2088,7 @@ Animator:
   m_GameObject: {fileID: 1193812638}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 411e49366f080834aaa7fa0f73c7d3c3, type: 2}
+  m_Controller: {fileID: 9100000, guid: 5fecd8ec94aacbb42b4b75845a0532a7, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -2112,6 +2112,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f787ee5037eaf3b458250d86de45ed4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  targetImage: {fileID: 0}
+  defaultTransitionDuration: 1
 --- !u!82 &1193812645
 AudioSource:
   m_ObjectHideFlags: 0
@@ -2221,7 +2223,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4af095a8dd69e845a69d8c250736f06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneToLoad: GameScene
+  sceneToLoad: MainMenu
 --- !u!1001 &1199274935
 PrefabInstance:
   m_ObjectHideFlags: 0
