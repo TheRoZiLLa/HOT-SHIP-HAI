@@ -549,7 +549,7 @@ AnimationClip:
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 16.75
+    m_StopTime: 17
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -2177,7 +2177,63 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 16.75
+  - time: 12.016666
+    functionName: PlaySpecificAudio
+    data: 
+    objectReferenceParameter: {fileID: 8300000, guid: 97e401561a94c99418f9acf3af6ca5ac, type: 3}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 12.349999
+    functionName: PlaySpecificAudio
+    data: 
+    objectReferenceParameter: {fileID: 8300000, guid: df42b3c312f85024b93f9d0628148b58, type: 3}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 12.683333
+    functionName: PlaySpecificAudio
+    data: 
+    objectReferenceParameter: {fileID: 8300000, guid: 41190bb3418bb1e4d835523c5051f886, type: 3}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 13
+    functionName: PlaySpecificAudio
+    data: 
+    objectReferenceParameter: {fileID: 8300000, guid: 97e401561a94c99418f9acf3af6ca5ac, type: 3}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 13.333333
+    functionName: PlaySpecificAudio
+    data: 
+    objectReferenceParameter: {fileID: 8300000, guid: df42b3c312f85024b93f9d0628148b58, type: 3}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 13.666667
+    functionName: PlaySpecificAudio
+    data: 
+    objectReferenceParameter: {fileID: 8300000, guid: 41190bb3418bb1e4d835523c5051f886, type: 3}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 13.833333
+    functionName: PlaySpecificAudio
+    data: 
+    objectReferenceParameter: {fileID: 8300000, guid: 97e401561a94c99418f9acf3af6ca5ac, type: 3}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 16
+    functionName: PlaySpecificAudio
+    data: 
+    objectReferenceParameter: {fileID: 8300000, guid: 4812af49e26c3ec4b9e29ac2371fe942, type: 3}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 17
     functionName: OnAnimationEnd
     data: 
     objectReferenceParameter: {fileID: 0}
